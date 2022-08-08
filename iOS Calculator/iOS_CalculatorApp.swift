@@ -1,8 +1,6 @@
-//
-//  iOS_CalculatorApp.swift
 //  iOS Calculator
 //
-//  Created by Rafael Neuwirth Swierczynski on 08/08/22.
+//  Application created by Rafael Neuwirth Swierczynski in the second half of 2022.
 //
 
 import SwiftUI
