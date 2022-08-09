@@ -1,6 +1,6 @@
 // Created by Rafael Neuwirth Swierczynski
 // Released on Github on August 8, 2022
-// Release 1.0
+// Release 2.0 (Released August 9, 2022)
 
 import SwiftUI
 
@@ -10,10 +10,15 @@ struct ContentView: View {
     
     @State var showStoredNumber = false
     
+    let doNotDisplay = ["0.0","-nan","inf"]
+    
     @State var displayText = "0" {
         didSet {
-            if (displayText == "0.0" || displayText == "-nan") {displayText = "0"}
+            for state in doNotDisplay
+            {if (displayText == state) {displayText = "0"}}
+            
             while (displayText.count > 7) {displayText.removeLast()}
+            
             if (displayText.hasSuffix(".0"))
             {displayText.removeLast(); displayText.removeLast()}
         }
@@ -62,7 +67,7 @@ struct ContentView: View {
         
     }
     
-    enum lastActions {
+    enum possibleActions {
         case nothing
         case plus
         case minus
@@ -70,13 +75,15 @@ struct ContentView: View {
         case divide
     }
     
-    @State var lastAction = lastActions.nothing
+    @State var lastAction = possibleActions.nothing
+    @State var penultimateAction = possibleActions.nothing
     
     func resetAll () {
         
         self.displayText = "0"
         self.storedNumber = 0.0
-        lastAction = lastActions.nothing
+        lastAction = possibleActions.nothing
+        penultimateAction = possibleActions.nothing
         
     }
     
@@ -95,7 +102,10 @@ struct ContentView: View {
             
         case .switchOperator: return .brown
             
-        case .darkmode: return Color("ColorModeButton")
+        case .darkmode:
+            if (darkModeScreen == true) {return Color("ColorModeButton")}
+            if (darkModeScreen == false) {return .black}
+            else {return .black}
             
         case .revealStored: return .gray
             
@@ -120,20 +130,20 @@ struct ContentView: View {
             }
             
         case .plus:
-            lastAction = lastActions.plus
-            moveToStored()
+            actionManager(lastAction: possibleActions.plus)
+            equalsWhileWork(penultimateAction: penultimateAction, lastAction: lastAction)
             
         case .minus:
-            lastAction = lastActions.minus
-            moveToStored()
+            actionManager(lastAction: possibleActions.minus)
+            equalsWhileWork(penultimateAction: penultimateAction, lastAction: lastAction)
             
         case .multiply:
-            lastAction = lastActions.multiply
-            moveToStored()
+            actionManager(lastAction: possibleActions.multiply)
+            equalsWhileWork(penultimateAction: penultimateAction, lastAction: lastAction)
             
         case .divide:
-            lastAction = lastActions.divide
-            moveToStored()
+            actionManager(lastAction: possibleActions.divide)
+            equalsWhileWork(penultimateAction: penultimateAction, lastAction: lastAction)
             
         case .switchOperator:
             if (displayText.contains("-") || displayText == "0")
@@ -144,7 +154,8 @@ struct ContentView: View {
                 displayText += holdThis
             }
             
-        case .equals: equals(lastAction: lastAction)
+        case .equals:
+            equals(lastAction: lastAction)
             
         case .clear: resetAll()
             
@@ -160,6 +171,17 @@ struct ContentView: View {
             
         }
         
+        func actionManager (lastAction: possibleActions) {
+            
+            self.penultimateAction = self.lastAction
+            self.lastAction = lastAction
+            
+            if (penultimateAction == possibleActions.nothing)
+            {penultimateAction = lastAction}
+
+        }
+        
+        
     }
     
     func writeDisplay (what: String) {
@@ -171,7 +193,31 @@ struct ContentView: View {
         
     }
     
-    func equals (lastAction: lastActions) {
+    func equalsWhileWork (penultimateAction: possibleActions, lastAction: possibleActions) {
+        
+        let doubleDisplayText = Double(displayText) ?? 0.0
+        let doubleStoredNumber = Double(storedNumber)
+        
+        switch penultimateAction {
+            
+        case .nothing:
+            return
+        case .divide:
+            storedNumber = (doubleStoredNumber / doubleDisplayText)
+        case .multiply:
+            storedNumber = (doubleStoredNumber * doubleDisplayText)
+        case .plus:
+            storedNumber = (doubleStoredNumber + doubleDisplayText)
+        case .minus:
+            storedNumber = (doubleStoredNumber - doubleDisplayText)
+            
+        }
+        
+        displayText = "0"
+        
+    }
+    
+    func equals (lastAction: possibleActions) {
         
         let doubleDisplayText = Double(displayText) ?? 0.0
         let doubleStoredNumber = Double(storedNumber)
@@ -206,11 +252,10 @@ struct ContentView: View {
             
             switch darkModeScreen {
             case true: Color(.black).ignoresSafeArea()
-            case false: Color("LightWhiteMode").ignoresSafeArea()
+            case false: Color("ColorModeButton").ignoresSafeArea()
             }
             
             VStack {
-                
                 Spacer()
                 
                 // Display Text
