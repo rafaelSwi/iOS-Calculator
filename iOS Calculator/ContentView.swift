@@ -1,4 +1,4 @@
-// Created by Rafael Neuwirth Swierczynski
+// Created by RafaelSwi on GitHub
 // Released on Github on August 8, 2022
 // Release 2.2 (Released August 9, 2022)
 
