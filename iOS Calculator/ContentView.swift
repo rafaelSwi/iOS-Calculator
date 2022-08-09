@@ -1,6 +1,6 @@
 // Created by Rafael Neuwirth Swierczynski
 // Released on Github on August 8, 2022
-// Release 2.0 (Released August 9, 2022)
+// Release 2.1 (Released August 9, 2022)
 
 import SwiftUI
 
@@ -178,7 +178,7 @@ struct ContentView: View {
             
             if (penultimateAction == possibleActions.nothing)
             {penultimateAction = lastAction}
-
+            
         }
         
         
@@ -198,23 +198,27 @@ struct ContentView: View {
         let doubleDisplayText = Double(displayText) ?? 0.0
         let doubleStoredNumber = Double(storedNumber)
         
-        switch penultimateAction {
+        if (storedNumber == 0.0) {moveToStored()}
+        else {
             
-        case .nothing:
-            return
-        case .divide:
-            storedNumber = (doubleStoredNumber / doubleDisplayText)
-        case .multiply:
-            storedNumber = (doubleStoredNumber * doubleDisplayText)
-        case .plus:
-            storedNumber = (doubleStoredNumber + doubleDisplayText)
-        case .minus:
-            storedNumber = (doubleStoredNumber - doubleDisplayText)
+            switch penultimateAction {
+                
+            case .nothing:
+                return
+            case .divide:
+                storedNumber = (doubleStoredNumber / doubleDisplayText)
+            case .multiply:
+                storedNumber = (doubleStoredNumber * doubleDisplayText)
+            case .plus:
+                storedNumber = (doubleStoredNumber + doubleDisplayText)
+            case .minus:
+                storedNumber = (doubleStoredNumber - doubleDisplayText)
+                
+            }
+            
+            displayText = "0"
             
         }
-        
-        displayText = "0"
-        
     }
     
     func equals (lastAction: possibleActions) {
