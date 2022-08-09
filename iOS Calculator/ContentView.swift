@@ -1,6 +1,6 @@
 // Created by Rafael Neuwirth Swierczynski
 // Released on Github on August 8, 2022
-// Release 2.1 (Released August 9, 2022)
+// Release 2.2 (Released August 9, 2022)
 
 import SwiftUI
 
@@ -146,7 +146,10 @@ struct ContentView: View {
             equalsWhileWork(penultimateAction: penultimateAction, lastAction: lastAction)
             
         case .switchOperator:
-            if (displayText.contains("-") || displayText == "0")
+            
+            if (displayText.contains("-")) {displayText.removeFirst(); return}
+            
+            if (displayText == "0")
             {return} else {
                 let holdThis = displayText
                 displayText = ""
