@@ -1,6 +1,6 @@
 // Created by RafaelSwi on GitHub
 // Released on Github on August 8, 2022
-// Release 2.2 (Released August 9, 2022)
+// Release 2.3 (Released August 9, 2022)
 
 import SwiftUI
 
@@ -10,7 +10,7 @@ struct ContentView: View {
     
     @State var showStoredNumber = false
     
-    let doNotDisplay = ["0.0","-nan","inf"]
+    let doNotDisplay = ["0.0","-nan", "nan", "inf"]
     
     @State var displayText = "0" {
         didSet {
