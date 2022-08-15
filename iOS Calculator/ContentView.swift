@@ -1,6 +1,6 @@
 // Created by RafaelSwi on GitHub
 // Released on Github on August 8, 2022
-// Release 2.3 (Released August 9, 2022)
+// Release 3.0 (Released August 15, 2022)
 
 import SwiftUI
 
@@ -8,7 +8,7 @@ struct ContentView: View {
     
     @State var storedNumber = 0.0
     
-    @State var showStoredNumber = false
+    @State var showStoredNumber = true
     
     let doNotDisplay = ["0.0","-nan", "nan", "inf"]
     
@@ -259,7 +259,7 @@ struct ContentView: View {
             
             switch darkModeScreen {
             case true: Color(.black).ignoresSafeArea()
-            case false: Color("ColorModeButton").ignoresSafeArea()
+            case false: LinearGradient (colors: [.pink, .purple], startPoint: .bottom, endPoint: .top).ignoresSafeArea()
             }
             
             VStack {
