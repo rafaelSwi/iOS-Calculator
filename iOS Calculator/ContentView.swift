@@ -8,7 +8,7 @@ struct ContentView: View {
     
     @State var storedNumber = 0.0
     
-    @State var showStoredNumber = true
+    @State var showStoredNumber = false
     
     let doNotDisplay = ["0.0","-nan", "nan", "inf"]
     
